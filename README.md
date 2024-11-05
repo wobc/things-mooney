@@ -5,6 +5,8 @@
 
 # THINGS-Mooney Database
 
+<img src="/mooney_toolbox/example.gif" alt="Output GIF" width="150"/>
+
 ## Overview
 The THINGS-Mooney database provides a set of "mooney-style" distorted images (created from the original license-free [THINGS-plus images](https://osf.io/jum2f/)). Additionally, this repository contains a toolbox to create your own mooney-style images, plus subjective recognition scores for each mooney image collected on a large sample of participants (n = 947).
 
