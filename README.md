@@ -1,2 +1,2 @@
-# things-mooney
-THINGS-Mooney database
+# THINGS-Mooney database
+
