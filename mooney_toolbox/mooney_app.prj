@@ -1,0 +1,97 @@
+<deployment-project plugin="plugin.apptool" plugin-version="1.0">
+  <configuration build-checksum="522009294" file="/Users/carlos/Documents/GitHub/semper_mooney/mooney_toolbox/mooney_app.prj" location="/Users/carlos/Documents/GitHub/semper_mooney/mooney_toolbox" name="mooney_app" target="target.mlapps" target-name="Package App">
+    <param.appname>mooney_app</param.appname>
+    <param.authnamewatermark>Carlos González</param.authnamewatermark>
+    <param.email>cgonzalez@ugr.es</param.email>
+    <param.company>University of Granada</param.company>
+    <param.icon />
+    <param.icons />
+    <param.summary>Create mooney images</param.summary>
+    <param.description />
+    <param.screenshot>/private/var/folders/5c/18tw3jrs22z90f2qj8lmn6tr0000gn/T/tpfd1c09bb_a4d9_4251_acfe_3905c16bddd7.png</param.screenshot>
+    <param.version>1.0</param.version>
+    <param.products.name>
+      <item>MATLAB</item>
+      <item>Image Processing Toolbox</item>
+    </param.products.name>
+    <param.products.id>
+      <item>1</item>
+      <item>17</item>
+    </param.products.id>
+    <param.products.version>
+      <item>9.4</item>
+      <item>10.2</item>
+    </param.products.version>
+    <param.platforms />
+    <param.output>/Users/carlos/Documents/GitHub/semper_mooney/mooney_toolbox</param.output>
+    <param.guid>7d7dda02-fabb-4836-a6fa-31ac171a5f90</param.guid>
+    <unset>
+      <param.icon />
+      <param.icons />
+      <param.description />
+      <param.version />
+      <param.platforms />
+      <param.output />
+    </unset>
+    <fileset.main>
+      <file>${PROJECT_ROOT}/mooney_app.mlapp</file>
+    </fileset.main>
+    <fileset.depfun />
+    <fileset.resources />
+    <fileset.package />
+    <build-deliverables>
+      <file location="/Users/carlos/Documents/GitHub/semper_mooney" name="mooney_toolbox" optional="false">/Users/carlos/Documents/GitHub/semper_mooney/mooney_toolbox</file>
+    </build-deliverables>
+    <workflow />
+    <matlab>
+      <root>/Applications/MATLAB_R2018a.app</root>
+      <toolboxes>
+        <toolbox name="fixedpoint" />
+        <toolbox name="matlabcoder" />
+        <toolbox name="matlabhdlcoder" />
+        <toolbox name="embeddedcoder" />
+        <toolbox name="polyspacebugfinder" />
+      </toolboxes>
+      <toolbox>
+        <fixedpoint>
+          <enabled>true</enabled>
+        </fixedpoint>
+      </toolbox>
+      <toolbox>
+        <matlabcoder>
+          <enabled>true</enabled>
+        </matlabcoder>
+      </toolbox>
+      <toolbox>
+        <matlabhdlcoder>
+          <enabled>true</enabled>
+        </matlabhdlcoder>
+      </toolbox>
+      <toolbox>
+        <embeddedcoder>
+          <enabled>true</enabled>
+        </embeddedcoder>
+      </toolbox>
+      <toolbox>
+        <polyspacebugfinder>
+          <enabled>true</enabled>
+        </polyspacebugfinder>
+      </toolbox>
+    </matlab>
+    <platform>
+      <unix>true</unix>
+      <mac>true</mac>
+      <windows>false</windows>
+      <win2k>false</win2k>
+      <winxp>false</winxp>
+      <vista>false</vista>
+      <linux>false</linux>
+      <solaris>false</solaris>
+      <osver>10.16</osver>
+      <os32>false</os32>
+      <os64>true</os64>
+      <arch>maci64</arch>
+      <matlab>true</matlab>
+    </platform>
+  </configuration>
+</deployment-project>
