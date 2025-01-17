@@ -1,0 +1,24 @@
+<!-- 
+
+File Name: base.html
+Author: Johannah Voeller (voeller@ugr.es); University of Granada (Spain)
+
+Description: 
+Interface to select Mooney images from the THINGS-Mooney database (https://github.com/wobc/things-mooney), implemented in python with flask.
+Main script app.py, frontend implementation in base.html and index.html
+
+-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'css/main.css')}}"
+    {% block head %}{% endblock %}
+</head>
+<body>
+    {% block body %}{% endblock %}
+</body>
+</html>

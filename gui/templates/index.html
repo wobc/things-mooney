@@ -1,0 +1,299 @@
+<!-- 
+
+File Name: index.html
+Author: Johannah Voeller (voeller@ugr.es); University of Granada (Spain)
+
+Description: 
+Interface to select Mooney images from the THINGS-Mooney database (https://github.com/wobc/things-mooney), implemented in python with flask.
+Main script app.py, frontend implementation in base.html and index.html (extends base.html)
+
+-->
+
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f2f5;
+        color: #333;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+    }
+
+    h1 {
+        text-align: center;
+        margin-top: 20px;
+        color: #007BFF;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    img {
+        display: block;
+        margin: 0 auto 20px;
+    }
+
+    form {
+        margin-top: 20px;
+    }
+
+    label {
+        display: block;
+        margin-top: 15px;
+        font-weight: bold;
+    }
+
+    input[type="text"], input[type="number"], select {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    input[type="submit"] {
+        margin-top: 20px;
+        padding: 12px;
+        background-color: #007BFF;
+        border: none;
+        border-radius: 4px;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+
+    .tooltip {
+        display: inline-block;
+        position: relative;
+        cursor: pointer;
+        color: #007BFF;
+    }
+
+    .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 220px;
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        border-radius: 4px;
+        padding: 8px;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%; 
+        left: 50%;
+        margin-left: -110px;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    .tooltip:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    .criteria-container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .criteria-label {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .input-container {
+        display: flex;
+        gap: 20px; /* Space between the two input fields */
+    }
+
+    .input-container label {
+        display: block;
+        font-size: 14px;
+        margin-bottom: 5px; /* Space between label and input field */
+    }
+
+    .input-container input {
+        padding: 8px;
+        width: 200px; /* Adjust width as needed */
+    }
+</style>
+
+<div class="container">
+    <h1>Welcome to the THINGS-Mooney image selection interface!</h1>
+
+    <div style="display: flex; justify-content: center; align-items: center;">
+        <div style="position: relative; width: 200px; height: 200px;">
+            <!-- Gray image in the background -->
+            <img src="{{ url_for('static', filename='images/banana_peel_gray.jpg') }}" 
+                 alt="Banana Peel" 
+                 style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;">
+            
+            <!-- Mooney image in the foreground with transparency -->
+            <img src="{{ url_for('static', filename='images/banana_peel_mooney.jpg') }}" 
+                 alt="Banana Peel" 
+                 style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; opacity: 0.8;">
+        </div>
+    </div>
+
+    <p>Follow the steps below to specify your parameters and generate your desired dataset. Please consult <a href="https://github.com/wobc/things-mooney">our github page</a> for more information.</p>
+    <p>After selecting your criteria, the images and the image metadata will be saved to your specified output folder.</p>
+
+    <form action="/" method="POST">
+
+        <!-- Existing form fields -->
+    
+        {% if error %}
+        <div style="color: red; margin-top: 20px;">
+            <p>{{ error }}</p>
+        </div>
+        {% endif %}
+
+        {% if message %}
+            <div style="color: green; margin-top: 20px;">
+                <p>{{ message }}</p>
+            </div>
+        {% endif %}
+
+
+        <!-- Output Directory -->
+        <label for="output_directory">Output Directory 
+            <span class="tooltip">ℹ
+                <span class="tooltiptext">Specify a new folder name in your current directory.</span>
+            </span>
+        </label>
+        <input type="text" id="output_directory" name="output_directory" placeholder="e.g., 'output_images'" required>
+
+        <!-- Total Number of Images -->
+        <label for="num_images">Total Number of Images 
+            <span class="tooltip">ℹ
+                <span class="tooltiptext">Enter the total number of images you want to include.</span>
+            </span>
+        </label>
+        <input type="number" id="num_images" name="num_images" placeholder="e.g., 100" min="1" required>
+
+        <!-- Subjective Recognition Parameters -->
+        <div class="criteria-container">
+            <label class="criteria-label">Subjective Recognition</label>
+            <div class="input-container">
+                <div>
+                    <label for="subj_recog_pre">Pre-Disambiguation
+                        <span class="tooltip">ℹ
+                            <span class="tooltiptext">
+                                Absolute value range: [0;1]
+                                - Use "x;y" (e.g., "0.3;0.4") for a range between x and y.
+                                - Use a single value "x" (e.g., "0.3") for recognition rates greater than x.
+                            </span>
+                        </span>
+                    </label>
+                    <input type="text" id="subj_recog_pre" name="subj_recog_pre" placeholder="e.g., 0.3 or 0.3;0.4" >
+                </div>
+
+                <div>
+                    <label for="semantic_distance_reduction">Post-Disambiguation
+                        <span class="tooltip">ℹ
+                            <span class="tooltiptext">
+                                Absolute value range: [0;1]
+                                - Use "x;y" (e.g., "0.3;0.4") for a range between x and y.
+                                - Use a single value "x" (e.g., "0.3") for recognition rates greater than x.
+                            </span>
+                        </span>
+                    </label>
+                    <input type="text" id="subj_recog_post" name="subj_recog_post" placeholder="e.g., 0.3 or 0.3;0.4">
+                </div>
+            </div>
+        </div>
+
+        <!-- Semantic Distance Parameters -->
+        <div class="criteria-container">
+            <label class="criteria-label">Semantic Distance</label>
+            <div class="input-container">
+                <div>
+                    <label for="semantic_distance_pre">Pre-Disambiguation
+                        <span class="tooltip">ℹ
+                            <span class="tooltiptext">
+                                Absolute value range: [0;1]
+                                - Use "x;y" (e.g., "0.3;0.4") for a range between x and y.
+                                - Use a single value "x" (e.g., "0.3") for recognition rates greater than x.
+                            </span>
+                        </span>
+                    </label>
+                    <input type="text" id="semantic_distance_pre" name="semantic_distance_pre" placeholder="e.g., 0.3 or 0.3;0.4" >
+                </div>
+                
+                <div>
+                    <label for="semantic_distance_reduction">Post-Disambiguation
+                        <span class="tooltip">ℹ
+                            <span class="tooltiptext">
+                                Absolute value range: [0;1]
+                                - Use "x;y" (e.g., "0.3;0.4") for a range between x and y.
+                                - Use a single value "x" (e.g., "0.3") for recognition rates greater than x.
+                            </span>
+                        </span>
+                    </label>
+                    <input type="text" id="semantic_distance_post" name="semantic_distance_post" placeholder="e.g., 0.3 or 0.3;0.4">
+                </div>
+            </div>
+        </div>
+
+        <!-- Entropy Criteria Parameters -->
+        <div class="criteria-container">
+            <label class="criteria-label">Semantic Entropy</label>
+            <div class="input-container">
+                <div>
+                    <label for="entropy_pre">Pre-Disambiguation
+                        <span class="tooltip">ℹ
+                            <span class="tooltiptext">
+                                Absolute value range: [0;4.1]
+                                - Use "x;y" (e.g., "0.3;0.4") for a range between x and y.
+                                - Use a single value "x" (e.g., "0.3") for recognition rates greater than x.
+                            </span>
+                        </span>
+                    </label>
+                    <input type="text" id="entropy_pre" name="entropy_pre" placeholder="e.g., 0.3 or 0.3;0.4" >
+                </div>
+                
+                <div>
+                    <label for="entropy_reduction">Post-Disambiguation
+                        <span class="tooltip">ℹ
+                            <span class="tooltiptext">
+                                Absolute value range: [0;3.9]
+                                - Use "x;y" (e.g., "0.3;0.4") for a range between x and y.
+                                - Use a single value "x" (e.g., "0.3") for recognition rates greater than x.
+                            </span>
+                        </span>
+                    </label>
+                    <input type="text" id="entropy_post" name="entropy_post" placeholder="e.g., 0.3 or 0.3;0.4">
+                </div>
+            </div>
+        </div>
+
+        <!-- Gray images Button -->
+        <p>
+            Before finishing, please <strong>indicate whether you want to download the corresponding gray-scale images</strong> by checking the box.
+            If you do not check the box, only the Mooney images will be downloaded.
+            <input type="checkbox" name="get_gray" style="margin-left: 10px;">
+        </p>
+        
+        <!-- Submit Button -->
+        <input type="submit" value="Create dataset" style="display: flex; justify-content: center; align-items: center;">
+    </form>
+</div>
+{% endblock %}
