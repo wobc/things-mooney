@@ -153,8 +153,8 @@ Main script app.py, frontend implementation in base.html and index.html (extends
         </div>
     </div>
 
-    <p>Follow the steps below to specify your parameters and generate your desired dataset. Please consult <a href="https://github.com/wobc/things-mooney">our github page</a> for more information.</p>
-    <p>Check <a href="https://github.com/JohannahVoeller/things-mooney/blob/feature/gui-image-selection/data_distribution.ipynb">here</a> to review the data distribution beforehand to facilitate the process of specifying your criteria.</p>
+    <p>Follow the steps below to specify your parameters and generate your desired dataset. Please consult <a href="https://github.com/wobc/things-mooney" target="_blank">our github page</a> for more information.</p>
+    <p>Check <a href="https://github.com/JohannahVoeller/things-mooney/blob/feature/gui-image-selection/data_distribution.ipynb" target="_blank">here</a> to review the data distribution beforehand to facilitate the process of specifying your criteria.</p>
     <p>After selecting your criteria, the images and the image metadata will be saved to your specified output folder.</p>
 
     <form action="/" method="POST">
@@ -190,8 +190,48 @@ Main script app.py, frontend implementation in base.html and index.html (extends
         </label>
         <input type="number" id="num_images" name="num_images" placeholder="e.g., 100" min="1" required>
 
+        <!-- Specify which criteria should be used for selection -->
+        <br></br>
+        <div style="display: flex; align-items: center;">
+            <h2 style="margin: 0;">I want to select images based on</h2>
+            <span class="tooltip" style="margin-left: 8px; font-size: 16px; cursor: pointer; vertical-align: middle;">ℹ
+                <span class="tooltiptext">
+                    You can choose which criteria you want to use to select your images. You do not have to specify a value for both pre- and post-disambiguation.
+                </span>
+            </span>
+            <p>Click <a href="https://github.com/JohannahVoeller/things-mooney/blob/feature/gui-image-selection/data_distribution.ipynb" target="_blank">here</a> for a detailed description of all variables.</p>
+        </div>
+        
+        
+        <!-- Criteria Buttons -->
+        <p>
+            Subjective Recognition
+            <span class="tooltip">ℹ
+                <span class="tooltiptext">
+                    Binary yes/no classification whether participants subjectively identified the object in the image or not. 
+                </span>
+            </span>
+            <input type="checkbox" id="subjectiveRecognitionCheckbox" style="margin-left: 10px;">
+            
+            Semantic Distance
+            <span class="tooltip">ℹ
+                <span class="tooltiptext">
+                    Distance in semantic space between labels based on co-occurences in large text corpora. Low semantic distance means participants gave a semantically related label, e.g. donkey (participant label) and horse (target label).  
+                </span>
+            </span>
+            <input type="checkbox" id="semanticDistanceCheckbox" style="margin-left: 10px;">
+            
+            Semantic Entropy
+            <span class="tooltip">ℹ
+                <span class="tooltiptext">
+                    The amount and frequency of different labels used for a specific image. Low entropy means participants used a small and consistent set of labels to describe the object, i.e. variability is low.  
+                </span>
+            </span>
+            <input type="checkbox" id="semanticEntropyCheckbox" style="margin-left: 10px;">
+        </p>
+
         <!-- Subjective Recognition Parameters -->
-        <div class="criteria-container">
+        <div class="criteria-container" id="subjectiveRecognitionDiv" style="display: none;">
             <label class="criteria-label">Subjective Recognition</label>
             <div class="input-container">
                 <div>
@@ -206,7 +246,6 @@ Main script app.py, frontend implementation in base.html and index.html (extends
                     </label>
                     <input type="text" id="subj_recog_pre" name="subj_recog_pre" placeholder="e.g., 0.3 or 0.3;0.4" >
                 </div>
-
                 <div>
                     <label for="semantic_distance_reduction">Post-Disambiguation
                         <span class="tooltip">ℹ
@@ -223,7 +262,7 @@ Main script app.py, frontend implementation in base.html and index.html (extends
         </div>
 
         <!-- Semantic Distance Parameters -->
-        <div class="criteria-container">
+        <div class="criteria-container" id="semanticDistanceDiv" style="display: none;">
             <label class="criteria-label">Semantic Distance</label>
             <div class="input-container">
                 <div>
@@ -238,7 +277,6 @@ Main script app.py, frontend implementation in base.html and index.html (extends
                     </label>
                     <input type="text" id="semantic_distance_pre" name="semantic_distance_pre" placeholder="e.g., 0.3 or 0.3;0.4" >
                 </div>
-                
                 <div>
                     <label for="semantic_distance_reduction">Post-Disambiguation
                         <span class="tooltip">ℹ
@@ -254,8 +292,8 @@ Main script app.py, frontend implementation in base.html and index.html (extends
             </div>
         </div>
 
-        <!-- Entropy Criteria Parameters -->
-        <div class="criteria-container">
+        <!-- Semantic Entropy Parameters -->
+        <div class="criteria-container" id="semanticEntropyDiv" style="display: none;">
             <label class="criteria-label">Semantic Entropy</label>
             <div class="input-container">
                 <div>
@@ -270,7 +308,6 @@ Main script app.py, frontend implementation in base.html and index.html (extends
                     </label>
                     <input type="text" id="entropy_pre" name="entropy_pre" placeholder="e.g., 0.3 or 0.3;0.4" >
                 </div>
-                
                 <div>
                     <label for="entropy_reduction">Post-Disambiguation
                         <span class="tooltip">ℹ
@@ -285,6 +322,33 @@ Main script app.py, frontend implementation in base.html and index.html (extends
                 </div>
             </div>
         </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                // Get checkboxes and divs
+                const subjectiveRecognitionCheckbox = document.getElementById("subjectiveRecognitionCheckbox");
+                const semanticDistanceCheckbox = document.getElementById("semanticDistanceCheckbox");
+                const semanticEntropyCheckbox = document.getElementById("semanticEntropyCheckbox");
+
+                const subjectiveRecognitionDiv = document.getElementById("subjectiveRecognitionDiv");
+                const semanticDistanceDiv = document.getElementById("semanticDistanceDiv");
+                const semanticEntropyDiv = document.getElementById("semanticEntropyDiv");
+
+                // Add event listeners
+                subjectiveRecognitionCheckbox.addEventListener("change", () => {
+                    subjectiveRecognitionDiv.style.display = subjectiveRecognitionCheckbox.checked ? "block" : "none";
+                });
+
+                semanticDistanceCheckbox.addEventListener("change", () => {
+                    semanticDistanceDiv.style.display = semanticDistanceCheckbox.checked ? "block" : "none";
+                });
+
+                semanticEntropyCheckbox.addEventListener("change", () => {
+                    semanticEntropyDiv.style.display = semanticEntropyCheckbox.checked ? "block" : "none";
+                });
+            });
+        </script>
+
 
         <!-- Gray images Button -->
         <p>
