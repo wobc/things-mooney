@@ -37,6 +37,11 @@ This will ensure that the dataset is properly set up.
 
 To create your own dataset using the web-based GUI, follow these steps:
 
+0. **Install FLASK if not already done**:
+   ```bash
+   pip install Flask
+   ```
+
 1. **Navigate to the `gui` folder**:
    Open a terminal and go to the `gui` folder in your cloned repository.
 
