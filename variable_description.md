@@ -27,18 +27,15 @@ This document provides detailed descriptions of the variables in the dataset, ex
 ### Semantic Entropy (semantic_entropy)
 - Average semantic entropy of participant-provided labels separately for all exposure conditions.
 - Entropy is defined as the variability in the set of labels used, considering the amount and frequencies of different guesses.
-- A low entropy means participants used a small and consistent set of labels to descirbe an image.
+- Low entropy means participants used a small and consistent set of labels to descirbe an image.
 
 ### Difference Variables (Post - Pre)
-- **diff_mean_subj_recog:** Change in subjective recognition from pre- to post-disambiguation.
-- **diff_mean_verb_acc:** Change in verbal accuracy from pre- to post-disambiguation.
-- **diff_mean_sem_dist:** Change in semantic distance from pre- to post-disambiguation.
+- **diff_mean_subj_recog:** Difference in subjective recognition between post- to pre-disambiguation.
+- **diff_mean_verb_acc:** Difference in verbal accuracy between post- to pre-disambiguation.
+- **diff_mean_sem_dist:** Difference in semantic distance between post- to pre-disambiguation.
 
 ### Information Gain (Pre - Post)
 - **info_gain_entropy:** Change in semantic entropy from pre- to post-disambiguation.
 - **info_gain_sem_dist:** Change in semantic distance from pre- to post-disambiguation (inverse diff_mean_sem_dist).
 - **info_gain_sem_dist_gray:** Change in semantic distance from pre- to greyscale.
 - **info_gain_entropy_gray:** Change in semantic entropy from pre- to greyscale.
-
-This document serves as a guide to understanding the dataset and its variables. Let us know if you need further clarifications!
-
