@@ -19,10 +19,11 @@ To use Selection GUI:
 # Impoprt Modules
 #-----------------
 
-from flask import Flask, request, render_template, session, url_for
+from flask import Flask, request, render_template, session, url_for, send_file
 import os
 import pandas as pd
 import shutil
+import zipfile
 import tempfile
 
 app = Flask(__name__)
@@ -134,14 +135,12 @@ def index():
 @app.route('/download', methods=['POST'])
 def download():
     try:
-        # Load selected DataFrame from temporary file
+        # Load selected DataFrame from session
         df_selected_path = session.get('df_selected_path')
         if not df_selected_path or not os.path.exists(df_selected_path):
             return "<p>Session expired or data lost. Please start over.</p>"
 
-        # Reload user inputs
         df_selected = pd.read_csv(df_selected_path)
-        output_directory = session.get('output_directory')
         num_images_to_download = session.get('num_images')
         get_gray = session.get('get_gray')
         all_images = request.form.get('all_images')
@@ -152,38 +151,44 @@ def download():
             if num_images_to_download > len(df_selected):
                 return "<p>Number exceeds available images.</p>"
             df_selected = df_selected.sample(n=num_images_to_download)
-        # if all images is selected --> df_selected = df_selected (no filtering)
 
-        # Make directories to store images
-        curr_dir = os.getcwd()
-        stim_mooney = os.path.join(os.path.dirname(curr_dir), 'stim', 'mooney')
-        stim_gray = os.path.join(os.path.dirname(curr_dir), 'stim', 'gray')
-        os.makedirs(os.path.join(output_directory, 'mooney'), exist_ok=True)
+        # Create temporary folder for zipping
+        temp_dir = "temp_download"
+        os.makedirs(temp_dir, exist_ok=True)
+        mooney_dir = os.path.join(temp_dir, 'mooney')
+        gray_dir = os.path.join(temp_dir, 'gray')
+        os.makedirs(mooney_dir, exist_ok=True)
 
-        # Copy images
+        # Define paths
+        stim_mooney = os.path.join(os.getcwd(), 'stim', 'mooney')
+        stim_gray = os.path.join(os.getcwd(), 'stim', 'gray')
+
+        # Copy images to temp folder
         for image in df_selected['image']:
-            shutil.copy(os.path.join(stim_mooney, f"{image}_mooney.jpg"), os.path.join(output_directory, 'mooney'))
-            # If user wants to download corresponding gray-images as well
+            shutil.copy(os.path.join(stim_mooney, f"{image}_mooney.jpg"), mooney_dir)
             if get_gray:
-                gray_dir = os.path.join(output_directory, 'gray')
                 os.makedirs(gray_dir, exist_ok=True)
                 shutil.copy(os.path.join(stim_gray, f"{image}_gray.jpg"), gray_dir)
 
-        # Save image metadata to CSV
-        df_selected.to_csv(os.path.join(output_directory, 'selected_images.csv'), index=False)
+        # Save metadata as CSV
+        df_selected.to_csv(os.path.join(temp_dir, 'selected_images.csv'), index=False)
 
-        session.clear()
-        # After download, show a confirmation message and button to start new selection
-        return f"""
-            <p>Download complete. Files saved to {output_directory}.</p>
-            <a href="{url_for('index')}">
-                <button>Start New Selection</button>
-            </a>
-        """
+        # Create ZIP file
+        zip_filename = "selected_images.zip"
+        zip_path = os.path.join(os.getcwd(), zip_filename)
+        with zipfile.ZipFile(zip_path, 'w') as zipf:
+            for root, _, files in os.walk(temp_dir):
+                for file in files:
+                    zipf.write(os.path.join(root, file), os.path.relpath(os.path.join(root, file), temp_dir))
+
+        # Remove temp directory
+        shutil.rmtree(temp_dir)
+
+        # Send the ZIP file for download
+        return send_file(zip_path, as_attachment=True)
 
     except Exception as e:
         return f"<p>Error: {e}</p>"
-
 
 if __name__ == '__main__':
     app.run(debug=True)
