@@ -1,41 +1,38 @@
-# Description of Variables in the CSV File
-
-## Overview
-This document provides detailed descriptions of the variables in the dataset, explaining their meanings and how they were derived. The dataset contains various metrics related to subjective recognition, verbal accuracy, semantic distance, and entropy across different exposure conditions.
-
-## Exposure Conditions
-- **Pre-disambiguation:** First presentation of the Mooney image before the participant has seen the corresponding greyscale version.
-- **Greyscale:** The disambiguation image (clear version of the Mooney image).
-- **Post-disambiguation:** Second presentation of the Mooney image after the participant has seen the corresponding greyscale version.
+# Codebook for Project Data
 
 ## Variables
-### Identification Variables
-- **image:** The name or identifier of the image used in the experiment.
 
-### Subjective Recognition (mean_subj_recog)
-- Mean percentage of subjectively recognized images across participants separately for all exposure conditions.
+- **image**: Name of the image stimulus
 
-### Verbal Accuracy (mean_verb_acc)
-- Proportion of correct verbal labels provided by participants separately for all exposure conditions.
-- A provided label is considered correct if it matches the target label or one of its pre-defined synonyms (semantic distance = 0).
+- **mean_subj_recog_pre**: Mean subjective recognition pre-disambiguation (range: 0-1)
+- **mean_subj_recog_post**: Mean subjective recognition post-disambiguation (range: 0-1)
+- **mean_subj_recog_grey**: Mean subjective recognition for greyscale images (range: 0-1)
 
-### Semantic Distance (mean_sem_dist)
-- Average semantic distance of participant-provided labels from the correct label separately for all exposure conditions.
-- Semantic distance is defined as the distance in semantic space. For this, we used [openly available semantic embeddings](https://osf.io/jum2f/) derived from large text corpora.
-- Low semantic distance means that participant-provided labels were close in semantic space to the target label (including synonyms), i.e. donkey and horse.
+- **mean_verb_acc_pre**: Mean verbal accuracy pre-disambiguation (range: 0-1)
+- **mean_verb_acc_post**: Mean verbal accuracy post-disambiguation (range: 0-1)
+- **mean_verb_acc_grey**: Mean verbal accuracy for greyscale images (range: 0-1)
 
-### Semantic Entropy (semantic_entropy)
-- Average semantic entropy of participant-provided labels separately for all exposure conditions.
-- Entropy is defined as the variability in the set of labels used, considering the amount and frequencies of different guesses.
-- Low entropy means participants used a small and consistent set of labels to descirbe an image.
+- **mean_sem_dist_pre**: Mean semantic distance pre-disambiguation (range: 0-1)
+- **mean_sem_dist_post**: Mean semantic distance post-disambiguation (range: 0-1)
+- **mean_sem_dist_grey**: Mean semantic distance for greyscale images (range: 0-1)
 
-### Difference Variables (Post - Pre)
-- **diff_mean_subj_recog:** Difference in subjective recognition between post- to pre-disambiguation.
-- **diff_mean_verb_acc:** Difference in verbal accuracy between post- to pre-disambiguation.
-- **diff_mean_sem_dist:** Difference in semantic distance between post- to pre-disambiguation.
+- **diff_mean_subj_recog**: Difference in mean subjective recognition (post - pre)
+- **diff_mean_verb_acc**: Difference in mean verbal accuracy (post - pre)
+- **diff_mean_sem_dist**: Difference in mean semantic distance (post - pre)
 
-### Information Gain (Pre - Post)
-- **info_gain_entropy:** Change in semantic entropy from pre- to post-disambiguation.
-- **info_gain_sem_dist:** Change in semantic distance from pre- to post-disambiguation (inverse diff_mean_sem_dist).
-- **info_gain_sem_dist_gray:** Change in semantic distance from pre- to greyscale.
-- **info_gain_entropy_gray:** Change in semantic entropy from pre- to greyscale.
+- **gray_semantic_entropy**: Semantic entropy for greyscale images
+- **post_semantic_entropy**: Semantic entropy post-disambiguation
+- **pre_semantic_entropy**: Semantic entropy pre-disambiguation
+
+- **info_gain_entropy**: Information gain in entropy from pre- to post-disambiguation
+- **info_gain_sem_dist**: Information gain in semantic distance from pre- to post-disambiguation
+- **info_gain_sem_dist_gray**: Information gain in semantic distance from pre-disambiguation to greyscale
+- **info_gain_entropy_gray**: Information gain based in entropy from pre-disambiguation to greyscale
+
+---
+
+## Definitions
+
+- **Semantic distance**: A measure of how distant two concepts are in a given semantic space, using [openly available semantic embeddings](https://osf.io/jum2f/) derived from large text corpora. Low semantic distance means that participant-provided labels were close in semantic space to the target label, i.e. donkey and horse.
+- **Entropy**: A measure of variability in the set of labels used to describe an image, considering the amount and frequencies of different guesses. Low entropy means participants used a small and consistent set of labels to descirbe an image.
+- **Information gain**: The reduction in semantic distance or uncertainty (entropy) after exposure to a stimulus, i.e. the grey-scal image.

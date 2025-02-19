@@ -205,29 +205,29 @@ Main script app.py, frontend implementation in base.html and index.html (extends
         
         <!-- Criteria Buttons -->
         <p>
+            <input type="checkbox" id="subjectiveRecognitionCheckbox" style="margin-left: 10px;">
             Subjective Recognition
             <span class="tooltip">ℹ
                 <span class="tooltiptext">
                     Binary yes/no classification whether participants subjectively identified the object in the image or not. 
                 </span>
             </span>
-            <input type="checkbox" id="subjectiveRecognitionCheckbox" style="margin-left: 10px;">
             
+            <input type="checkbox" id="semanticDistanceCheckbox" style="margin-left: 10px;">
             Semantic Distance
             <span class="tooltip">ℹ
                 <span class="tooltiptext">
                     Distance in semantic space between labels based on co-occurences in large text corpora. Low semantic distance means participants gave a semantically related label, e.g. donkey (participant label) and horse (target label).  
                 </span>
             </span>
-            <input type="checkbox" id="semanticDistanceCheckbox" style="margin-left: 10px;">
             
+            <input type="checkbox" id="semanticDistanceCheckbox" style="margin-left: 10px;">
             Semantic Entropy
             <span class="tooltip">ℹ
                 <span class="tooltiptext">
                     The amount and frequency of different labels used for a specific image. Low entropy means participants used a small and consistent set of labels to describe the object, i.e. variability is low.  
                 </span>
             </span>
-            <input type="checkbox" id="semanticEntropyCheckbox" style="margin-left: 10px;">
         </p>
 
         <!-- Subjective Recognition Parameters -->
