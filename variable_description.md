@@ -35,4 +35,4 @@
 
 - **Semantic distance**: A measure of how distant two concepts are in a given semantic space, using [openly available semantic embeddings](https://osf.io/jum2f/) derived from large text corpora. Low semantic distance means that participant-provided labels were close in semantic space to the target label, i.e. donkey and horse.
 - **Entropy**: A measure of variability in the set of labels used to describe an image, considering the amount and frequencies of different guesses. Low entropy means participants used a small and consistent set of labels to descirbe an image.
-- **Information gain**: The reduction in semantic distance or uncertainty (entropy) after exposure to a stimulus, i.e. the grey-scal image.
+- **Information gain**: The reduction in semantic distance or uncertainty (entropy) after exposure to a stimulus, i.e. the greyscale image.
