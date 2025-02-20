@@ -1,7 +1,3 @@
 Flask
 gunicorn
 pandas
-shutil
-zipfile
-tempfile
-os
