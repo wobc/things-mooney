@@ -35,7 +35,9 @@ This will ensure that the dataset is properly set up.
 
 ## Create Your Own Dataset
 
-To create your own dataset using the web-based GUI, follow these steps:
+To create your own dataset using the web-based GUI, click [here](https://things-mooney.onrender.com/) and follow all the steps.
+
+If you have cloned the repository, you can also run the GUI locally following these steps:
 
 0. **Install FLASK if not already done**:
    ```bash
