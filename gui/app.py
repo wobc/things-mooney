@@ -160,8 +160,29 @@ def download():
         os.makedirs(mooney_dir, exist_ok=True)
 
         # Define paths
-        stim_mooney = os.path.join(os.getcwd(), 'stim', 'mooney')
-        stim_gray = os.path.join(os.getcwd(), 'stim', 'gray')
+        # Correct path (move up one directory from 'gui')
+        stim_mooney = os.path.abspath(os.path.join(os.getcwd(), '..', 'stim', 'mooney'))
+
+        if not os.path.exists(stim_mooney):
+            return f"<p>Error: stim/mooney folder not found at {stim_mooney}</p>"
+
+        # Debugging: Print the path
+        print(f"Looking for images in: {stim_mooney}")
+
+        stim_gray = os.path.abspath(os.path.join(os.getcwd(), '..', 'stim', 'gray'))
+
+        if not os.path.exists(stim_gray):
+            return f"<p>Error: stim/mooney folder not found at {stim_gray}</p>"
+
+        # Debugging: Print the path
+        print(f"Looking for images in: {stim_gray}")
+
+
+        # stim_mooney = os.path.join(os.getcwd(), '..', 'stim', 'mooney')
+        # stim_gray = os.path.join(os.getcwd(), '..', 'stim', 'gray')
+
+        #stim_mooney = os.path.join(os.getcwd(), 'stim', 'mooney')
+        #stim_gray = os.path.join(os.getcwd(), 'stim', 'gray')
 
         # Copy images to temp folder
         for image in df_selected['image']:
