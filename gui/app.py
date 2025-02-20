@@ -144,6 +144,7 @@ def download():
         num_images_to_download = session.get('num_images')
         get_gray = session.get('get_gray')
         all_images = request.form.get('all_images')
+        folder_name = session.get('output_directory')
 
         # Adjust number of images
         if not all_images:
@@ -178,12 +179,6 @@ def download():
         print(f"Looking for images in: {stim_gray}")
 
 
-        # stim_mooney = os.path.join(os.getcwd(), '..', 'stim', 'mooney')
-        # stim_gray = os.path.join(os.getcwd(), '..', 'stim', 'gray')
-
-        #stim_mooney = os.path.join(os.getcwd(), 'stim', 'mooney')
-        #stim_gray = os.path.join(os.getcwd(), 'stim', 'gray')
-
         # Copy images to temp folder
         for image in df_selected['image']:
             shutil.copy(os.path.join(stim_mooney, f"{image}_mooney.jpg"), mooney_dir)
@@ -195,7 +190,7 @@ def download():
         df_selected.to_csv(os.path.join(temp_dir, 'selected_images.csv'), index=False)
 
         # Create ZIP file
-        zip_filename = "selected_images.zip"
+        zip_filename = f"{folder_name}.zip"
         zip_path = os.path.join(os.getcwd(), zip_filename)
         with zipfile.ZipFile(zip_path, 'w') as zipf:
             for root, _, files in os.walk(temp_dir):
