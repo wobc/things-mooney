@@ -19,7 +19,7 @@ To use Selection GUI:
 # Impoprt Modules
 #-----------------
 
-from flask import Flask, request, render_template, session, url_for, send_file
+from flask import Flask, request, render_template, session, url_for, send_file, redirect
 import os
 import pandas as pd
 import shutil
@@ -51,8 +51,8 @@ def index():
             
             # Prepare directories
             curr_dir = os.getcwd()
-            output_directory = os.path.join(curr_dir, output_directory)
-            os.makedirs(output_directory, exist_ok=True)
+            #output_directory = os.path.join(curr_dir, output_directory)
+            #os.makedirs(output_directory, exist_ok=True)
 
             # Load metadata
             metadata_path = os.path.join(os.path.dirname(curr_dir), 'things_mooney_metadata.csv')
@@ -95,31 +95,64 @@ def index():
 
             # Alert if no images meet criteria
             if num_images_found == 0:
-                return "<p>No images found matching your criteria. Please adjust.</p>"
+                return """
+                    <div style="font-family: Arial, sans-serif; max-width: 500px; margin: auto; padding: 20px; border-radius: 10px; background-color: #f9f9f9; text-align: center;">
+                        <h2>😞 No images found</h2>
+                        <p>Sorry, no images match your selected criteria. Please try adjusting your selection.</p>
+                        <br>
+                        <a href="/"><button style="padding: 10px 20px; background-color: #dc3545; color: white; border: none; border-radius: 5px; cursor: pointer;">🔄 Start New Selection</button></a>
+                    </div>
+                """
 
-            # Save DataFrame to a temporary file
-            temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".csv")
-            df_selected.to_csv(temp_file.name, index=False)
-            temp_file_path = temp_file.name
-            #print(temp_file_path)
+            # Save filtered DataFrame to a temporary CSV file
+            temp_csv_file = tempfile.NamedTemporaryFile(delete=False, suffix=".csv")
+            df_selected.to_csv(temp_csv_file.name, index=False)
+            csv_file_path = temp_csv_file.name
+
+            # Save criteria to a text file
+            temp_txt_file = tempfile.NamedTemporaryFile(delete=False, suffix=".txt")
+            txt_file_path = temp_txt_file.name
+
+            with open(txt_file_path, "w") as txt_output:
+                txt_output.write("Selected Criteria:\n")
+                for criteria in criteria:
+                    txt_output.write(str(criteria) + "\n")
+
             
             # Save session data
-            session['df_selected_path'] = temp_file_path
+            session['df_selected_path'] = csv_file_path
+            session['criteria'] = txt_file_path
             session['output_directory'] = output_directory
             session['num_images'] = num_images
             session['get_gray'] = get_gray
 
             # Ask user to confirm download quantity (all images found or selected number of images)
             return f"""
-                <p>{num_images_found} images found.</p>
-                <form action="/download" method="POST">
-                    <label for="num_images">Would you like to download all images or the number of images you specified ({num_images})?:</label>
+                <div style="font-family: Arial, sans-serif; max-width: 500px; margin: auto; padding: 20px; border-radius: 10px; background-color: #f9f9f9; text-align: center;">
+                    <h2>{num_images_found} images found 🎉</h2>
+                    <p>Would you like to download all images or the specified number ({num_images})?</p>
+                    <form action="/download" method="POST">
+                        <label>
+                            <input type="checkbox" name="all_images"> Download all images
+                        </label>
+                        <br><br>
+                        <button type="submit" style="padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">Confirm Selection & Download</button>
+                    </form>
                     <br>
-                    <input type="checkbox" name="all_images"> All images
-                    <br>
-                    <input type="submit" value="Confirm Download">
-                </form>
+                    <a href="/" style="color: #007bff; text-decoration: none;">⬅ Start New Selection</a>
+                </div>
             """
+
+            # return f"""
+            #     <p>{num_images_found} images found.</p>
+            #     <form action="/download" method="POST">
+            #         <label for="num_images">Would you like to download all images or the number of images you specified ({num_images})?:</label>
+            #         <br>
+            #         <input type="checkbox" name="all_images"> All images
+            #         <br>
+            #         <input type="submit" value="Confirm Download">
+            #     </form>
+            # """
 
         except Exception as e:
             return f"<p>Error: {e}</p>"
@@ -135,16 +168,27 @@ def index():
 @app.route('/download', methods=['POST'])
 def download():
     try:
-        # Load selected DataFrame from session
+       # Retrieve session data
         df_selected_path = session.get('df_selected_path')
-        if not df_selected_path or not os.path.exists(df_selected_path):
-            return "<p>Session expired or data lost. Please start over.</p>"
-
-        df_selected = pd.read_csv(df_selected_path)
+        criteria_path = session.get('criteria')
         num_images_to_download = session.get('num_images')
         get_gray = session.get('get_gray')
         all_images = request.form.get('all_images')
         folder_name = session.get('output_directory')
+
+        # Check if required files exist
+        if not df_selected_path or not os.path.exists(df_selected_path):
+            return "<p>Session expired or data lost. Please start over.</p>"
+
+        if not criteria_path or not os.path.exists(criteria_path):
+            return "<p>Criteria file is missing. Please start over.</p>"
+
+        # Load selected images DataFrame
+        df_selected = pd.read_csv(df_selected_path)
+
+        # Load criteria from the text file
+        with open(criteria_path, "r") as criteria_file:
+            criteria_content = criteria_file.readlines()
 
         # Adjust number of images
         if not all_images:
@@ -160,8 +204,7 @@ def download():
         gray_dir = os.path.join(temp_dir, 'gray')
         os.makedirs(mooney_dir, exist_ok=True)
 
-        # Define paths
-        # Correct path (move up one directory from 'gui')
+        # Define paths to get images (parent dir)
         stim_mooney = os.path.abspath(os.path.join(os.getcwd(), '..', 'stim', 'mooney'))
 
         if not os.path.exists(stim_mooney):
@@ -186,8 +229,10 @@ def download():
                 os.makedirs(gray_dir, exist_ok=True)
                 shutil.copy(os.path.join(stim_gray, f"{image}_gray.jpg"), gray_dir)
 
-        # Save metadata as CSV
+        # Save metadata and criteria
         df_selected.to_csv(os.path.join(temp_dir, 'selected_images.csv'), index=False)
+        with open(os.path.join(temp_dir, 'criteria.txt'), "w") as file:
+            file.writelines(criteria_content)
 
         # Create ZIP file
         zip_filename = f"{folder_name}.zip"
@@ -200,9 +245,12 @@ def download():
         # Remove temp directory
         shutil.rmtree(temp_dir)
 
-        # Send the ZIP file for download
+        # Store ZIP path in session & Redirect to success page
+        session['zip_path'] = zip_path
         return send_file(zip_path, as_attachment=True)
 
+        #return redirect(url_for('success'))
+    
     except Exception as e:
         return f"<p>Error: {e}</p>"
 

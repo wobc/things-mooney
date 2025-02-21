@@ -329,6 +329,50 @@ Main script app.py, frontend implementation in base.html and index.html (extends
                 const subjectiveRecognitionCheckbox = document.getElementById("subjectiveRecognitionCheckbox");
                 const semanticDistanceCheckbox = document.getElementById("semanticDistanceCheckbox");
                 const semanticEntropyCheckbox = document.getElementById("semanticEntropyCheckbox");
+        
+                const subjectiveRecognitionDiv = document.getElementById("subjectiveRecognitionDiv");
+                const semanticDistanceDiv = document.getElementById("semanticDistanceDiv");
+                const semanticEntropyDiv = document.getElementById("semanticEntropyDiv");
+        
+                // Get input fields
+                const subjRecogPre = document.getElementById("subj_recog_pre");
+                const subjRecogPost = document.getElementById("subj_recog_post");
+                const semanticDistancePre = document.getElementById("semantic_distance_pre");
+                const semanticDistancePost = document.getElementById("semantic_distance_post");
+                const entropyPre = document.getElementById("entropy_pre");
+                const entropyPost = document.getElementById("entropy_post");
+        
+                function toggleVisibility(checkbox, div, inputs) {
+                    if (checkbox.checked) {
+                        div.style.display = "block";
+                    } else {
+                        div.style.display = "none";
+                        inputs.forEach(input => input.value = ""); // Clear input values
+                    }
+                }
+        
+                // Add event listeners
+                subjectiveRecognitionCheckbox.addEventListener("change", () => {
+                    toggleVisibility(subjectiveRecognitionCheckbox, subjectiveRecognitionDiv, [subjRecogPre, subjRecogPost]);
+                });
+        
+                semanticDistanceCheckbox.addEventListener("change", () => {
+                    toggleVisibility(semanticDistanceCheckbox, semanticDistanceDiv, [semanticDistancePre, semanticDistancePost]);
+                });
+        
+                semanticEntropyCheckbox.addEventListener("change", () => {
+                    toggleVisibility(semanticEntropyCheckbox, semanticEntropyDiv, [entropyPre, entropyPost]);
+                });
+            });
+        </script>
+        
+        
+        <!-- <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                // Get checkboxes and divs
+                const subjectiveRecognitionCheckbox = document.getElementById("subjectiveRecognitionCheckbox");
+                const semanticDistanceCheckbox = document.getElementById("semanticDistanceCheckbox");
+                const semanticEntropyCheckbox = document.getElementById("semanticEntropyCheckbox");
 
                 const subjectiveRecognitionDiv = document.getElementById("subjectiveRecognitionDiv");
                 const semanticDistanceDiv = document.getElementById("semanticDistanceDiv");
@@ -347,7 +391,7 @@ Main script app.py, frontend implementation in base.html and index.html (extends
                     semanticEntropyDiv.style.display = semanticEntropyCheckbox.checked ? "block" : "none";
                 });
             });
-        </script>
+        </script> -->
 
 
         <!-- Gray images Button -->
