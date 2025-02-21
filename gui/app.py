@@ -97,7 +97,7 @@ def index():
             if num_images_found == 0:
                 return """
                     <div style="font-family: Arial, sans-serif; max-width: 500px; margin: auto; padding: 20px; border-radius: 10px; background-color: #f9f9f9; text-align: center;">
-                        <h2>😞 No images found</h2>
+                        <h2>No images found</h2>
                         <p>Sorry, no images match your selected criteria. Please try adjusting your selection.</p>
                         <br>
                         <a href="/"><button style="padding: 10px 20px; background-color: #dc3545; color: white; border: none; border-radius: 5px; cursor: pointer;">🔄 Start New Selection</button></a>
@@ -129,7 +129,7 @@ def index():
             # Ask user to confirm download quantity (all images found or selected number of images)
             return f"""
                 <div style="font-family: Arial, sans-serif; max-width: 500px; margin: auto; padding: 20px; border-radius: 10px; background-color: #f9f9f9; text-align: center;">
-                    <h2>{num_images_found} images found 🎉</h2>
+                    <h2>{num_images_found} images found</h2>
                     <p>Would you like to download all images or the specified number ({num_images})?</p>
                     <form action="/download" method="POST">
                         <label>
@@ -142,17 +142,6 @@ def index():
                     <a href="/" style="color: #007bff; text-decoration: none;">⬅ Start New Selection</a>
                 </div>
             """
-
-            # return f"""
-            #     <p>{num_images_found} images found.</p>
-            #     <form action="/download" method="POST">
-            #         <label for="num_images">Would you like to download all images or the number of images you specified ({num_images})?:</label>
-            #         <br>
-            #         <input type="checkbox" name="all_images"> All images
-            #         <br>
-            #         <input type="submit" value="Confirm Download">
-            #     </form>
-            # """
 
         except Exception as e:
             return f"<p>Error: {e}</p>"
