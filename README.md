@@ -9,13 +9,13 @@
 The **THINGS-Mooney database** provides a collection of "Mooney-style" distorted images created from the original, license-free [THINGS-plus images](https://osf.io/jum2f/). This repository includes:
 - A set of mooney-style images, plus the unambiguous grayscale versions.
 - A toolbox that allows you to create your own mooney-style images.
-- Subjective recognition scores for each Mooney image collected from 947 participants.
+- Subjective identification scores for each Mooney image collected from 947 participants.
 
 ## Contents
 This repository includes the following components:
 - **`stim/`**: Contains the Mooney-transformed stimuli images (`mooney` folder), along with the gray-scale, unambiguous versions of the images (`gray` folder).
 - **`mooney_toolbox/`**: A toolbox for generating Mooney images.
-- **`gui/`**: A web-based graphical user interface (GUI) to help you create your own dataset by specifying various criteria (e.g., initial semantic distance, recognition rates).
+- **`gui/`**: A web-based graphical user interface (GUI) to help you create your own dataset by specifying various criteria (e.g., initial semantic distance, identification rates).
 - **`data_checks.py`**: Python script for verifying the integrity of the dataset.
 - **`things_mooney.csv`**: Metadata for the stimuli in the Mooney dataset.
 - **`LICENSE`**: MIT license for the project.
@@ -33,19 +33,37 @@ python data_checks.py
 
 This will ensure that the dataset is properly set up.
 
-## Create Your Own Dataset
+## 🧠 Create Your Own Mooney-Style Dataset
+
+### 🔗 **Quick Start: Use the Web Interface**
+
+**👉 [Launch the Dataset Creator](https://things-mooney.onrender.com/)**  
+Create your dataset directly in your browser—no coding required.  
+Customize criteria like semantic distances and identification rates to generate your own Mooney-style dataset.
+
+---
+
+### ⚙️ Prefer to Run Locally?
+
+If you'd rather use the tool on your own machine, follow these steps:
+
+1. **Install Flask (if not already installed):**
+   ```bash
+   pip install Flask
+
+
+<!-- ## Create Your Own Dataset
 
 To create your own dataset using the web-based GUI, click [here](https://things-mooney.onrender.com/) and follow all the steps.
 
-If you have cloned the repository, you can also run the GUI locally following these steps:
+If you have cloned the repository, you can also run the GUI locally following these steps: -->
 
 0. **Install FLASK if not already done**:
    ```bash
    pip install Flask
    ```
 
-1. **Navigate to the `gui` folder**:
-   Open a terminal and go to the `gui` folder in your cloned repository.
+1. **Navigate to the `gui` folder** in your cloned repository
 
 2. **Run the web application**:
    In the terminal, run the following command:
@@ -54,14 +72,11 @@ If you have cloned the repository, you can also run the GUI locally following th
    ```
    This will start a local web server.
 
-3. **Access the GUI**:
-   Open your preferred web browser and go to:
+3. **Open your browser at**:
    ```
    http://127.0.0.1:5000
    ```
-
-4. **Start creating your dataset**:
-   Use the web interface to specify various criteria (e.g., semantic distances, recognition rates) and generate your own Mooney-style dataset.
+You’ll now have access to the same intuitive GUI, locally hosted.
 
 ---
 
