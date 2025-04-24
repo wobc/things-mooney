@@ -33,12 +33,12 @@ python data_checks.py
 
 This will ensure that the dataset is properly set up.
 
-## 🧠 Create Your Own Mooney-Style Dataset
+## Create Your Own Mooney-Style Dataset
 
 ### 🔗 **Quick Start: Use the Web Interface**
 
-**👉 [Launch the Dataset Creator](https://things-mooney.onrender.com/)**  
-Create your dataset directly in your browser—no coding required.  
+**[Launch the Dataset Creator](https://things-mooney.onrender.com/)**  
+Create your dataset directly in your browser — no coding required.  
 Customize criteria like semantic distances and identification rates to generate your own Mooney-style dataset.
 
 ---
@@ -47,30 +47,17 @@ Customize criteria like semantic distances and identification rates to generate 
 
 If you'd rather use the tool on your own machine, follow these steps:
 
-1. **Install Flask (if not already installed):**
-   ```bash
-   pip install Flask
-
-
-<!-- ## Create Your Own Dataset
-
-To create your own dataset using the web-based GUI, click [here](https://things-mooney.onrender.com/) and follow all the steps.
-
-If you have cloned the repository, you can also run the GUI locally following these steps: -->
-
-0. **Install FLASK if not already done**:
+0. **Install FLASK** (if not already done):
    ```bash
    pip install Flask
    ```
 
 1. **Navigate to the `gui` folder** in your cloned repository
 
-2. **Run the web application**:
-   In the terminal, run the following command:
+2. **Start the local server** from your terminal:
    ```bash
    python3 app.py
    ```
-   This will start a local web server.
 
 3. **Open your browser at**:
    ```
