@@ -41,8 +41,8 @@ def index():
             # Parse form inputs
             output_directory = request.form['output_directory']
             num_images = int(request.form['num_images'])
-            subj_recog_pre = request.form.get('subj_recog_pre')
-            subj_recog_post = request.form.get('subj_recog_post')
+            subj_ident_pre = request.form.get('subj_ident_pre')
+            subj_ident_post = request.form.get('subj_ident_post')
             semantic_distance_pre = request.form.get('semantic_distance_pre')
             semantic_distance_post = request.form.get('semantic_distance_post')
             entropy_pre = request.form.get('entropy_pre')
@@ -63,12 +63,12 @@ def index():
             # Prepare criteria
             criteria = []
             variable_names = [
-                "mean_subj_recog_pre", "mean_subj_recog_post",
-                "mean_sem_dist_pre", "mean_sem_dist_post",
-                "pre_semantic_entropy", "post_semantic_entropy"
+                "subj_ident_pre", "subj_ident_post",
+                "sem_dist_pre", "sem_dist_post",
+                "sem_entropy_pre", "sem_entropy_post"
             ]
 
-            for var_name, value in zip(variable_names, [subj_recog_pre, subj_recog_post, semantic_distance_pre, semantic_distance_post, entropy_pre, entropy_post]):
+            for var_name, value in zip(variable_names, [subj_ident_pre, subj_ident_post, semantic_distance_pre, semantic_distance_post, entropy_pre, entropy_post]):
                 if value:
                     start, stop = map(float, value.split(";")) if ";" in value else (float(value), None)
                     criteria.append({f"{var_name}_start": start, f"{var_name}_stop": stop or things_metadata[var_name].max()})
