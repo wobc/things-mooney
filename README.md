@@ -1,7 +1,7 @@
 
 # THINGS-Mooney Database
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14040189.svg)](https://doi.org/10.5281/zenodo.14040189)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15340222.svg)](https://doi.org/10.5281/zenodo.15340222)
 
 <img src="/mooney_toolbox/example.gif" alt="Output GIF" width="150"/>
 
@@ -71,7 +71,7 @@ You’ll now have access to the same intuitive GUI, locally hosted.
 
 If you use this dataset in your research, please cite this repository as follows:
 
-Linde-Domingo, J.*, Ortiz-Tudela, J.*, Voeller, J., & González-García, C. (2024). THINGS-Mooney database (v1.0.0). Zenodo. [https://doi.org/10.5281/zenodo.14040189](https://doi.org/10.5281/zenodo.14040189)
+Linde-Domingo, J.*, Ortiz-Tudela, J.*, Voeller, J., & González-García, C. (2025). THINGS-Mooney database (v1.1). Zenodo. [https://doi.org/10.5281/zenodo.14040189](https://doi.org/10.5281/zenodo.14040189)
 
 _(* denotes equal contribution)_
 
